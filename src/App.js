@@ -92,95 +92,110 @@ function diasAteProva() {
 function gerarCronograma(cargo, horasDia, progressoExistente = {}) {
   const todos = [...TOPICOS_COMUNS, ...(TOPICOS_CARGO[cargo] || [])];
 
-  // Semanas disponíveis até 05/09/2026 (dia antes da prova)
+  // Semanas até 05/09/2026 (véspera da prova)
   const hoje = new Date();
   hoje.setHours(0,0,0,0);
   const vespera = new Date("2026-09-05");
   const diasDisponiveis = Math.max(7, Math.ceil((vespera - hoje) / 86400000));
   const semanasDisponiveis = Math.ceil(diasDisponiveis / 7);
 
-  // Total de tópicos disponíveis
-  const totalTopicos = todos.length;
-  const totalTopicosSemMedia = todos.filter(t => t.p !== "media").length;
-  const totalSlots = horasDia * 7 * semanasDisponiveis; // slots totais no período
-
-  // Decide se inclui média: inclui se houver slots suficientes para tudo
-  const lista = totalSlots >= totalTopicos
-    ? todos
-    : todos.filter(t => t.p !== "media");
+  // Tópicos por semana = horas/dia * 7 dias
+  const topicosPorSemana = horasDia * 7;
 
   // Cria IDs e marca progresso
-  const comIds = lista.map((t, i) => ({
+  const comIds = todos.map((t, i) => ({
     ...t,
     id: `${cargo}_${i}`,
     concluido: !!progressoExistente[`${cargo}_${i}`],
   }));
-
-  const nTopicos = comIds.length;
-
-  // Calcula quantos tópicos por semana para distribuir uniformemente
-  // Se tiver mais slots que tópicos: distribui proporcionalmente (revisão nas últimas semanas)
-  // Se tiver menos slots que tópicos: concentra por prioridade
-  const topicosPorSemana = Math.max(1, Math.round(nTopicos / semanasDisponiveis));
 
   // Separa por prioridade
   const altissima = comIds.filter(t => t.p === "altissima");
   const alta      = comIds.filter(t => t.p === "alta");
   const media     = comIds.filter(t => t.p === "media");
 
-  // Intercala: altíssima, alta, altíssima, alta, altíssima, média
-  const filaOrdenada = [];
-  const aIdx = { altissima: 0, alta: 0, media: 0 };
-  const filas = { altissima, alta, media };
-  const padrao = ["altissima", "alta", "altissima", "alta", "altissima", "media"];
-  let rodada = 0;
-
-  while (aIdx.altissima < altissima.length || aIdx.alta < alta.length || aIdx.media < media.length) {
-    const tipo = padrao[rodada % padrao.length];
-    if (aIdx[tipo] < filas[tipo].length) {
-      filaOrdenada.push(filas[tipo][aIdx[tipo]]);
-      aIdx[tipo]++;
-    } else {
-      const fallback = ["altissima", "alta", "media"].find(t => aIdx[t] < filas[t].length);
-      if (!fallback) break;
-      filaOrdenada.push(filas[fallback][aIdx[fallback]]);
-      aIdx[fallback]++;
+  // Gera fila intercalada base (1 ciclo completo de todos os tópicos)
+  // Padrão: altíssima, alta, altíssima, alta, altíssima, média
+  const gerarFila = () => {
+    const fila = [];
+    const idx = { altissima: 0, alta: 0, media: 0 };
+    const filas = { altissima: [...altissima], alta: [...alta], media: [...media] };
+    const padrao = ["altissima", "alta", "altissima", "alta", "altissima", "media"];
+    let rodada = 0;
+    while (idx.altissima < filas.altissima.length || idx.alta < filas.alta.length || idx.media < filas.media.length) {
+      const tipo = padrao[rodada % padrao.length];
+      if (idx[tipo] < filas[tipo].length) {
+        fila.push(filas[tipo][idx[tipo]]); idx[tipo]++;
+      } else {
+        const fallback = ["altissima", "alta", "media"].find(t => idx[t] < filas[t].length);
+        if (!fallback) break;
+        fila.push(filas[fallback][idx[fallback]]); idx[fallback]++;
+      }
+      rodada++;
     }
-    rodada++;
-  }
-
-  // Distribui em semanas com topicosPorSemana uniforme
-  const semanas = [];
-  let semAtual = { num: 1, blocos: {}, count: 0, ordemBlocos: [] };
-
-  const pushSemana = () => {
-    semanas.push({
-      num: semAtual.num,
-      blocos: semAtual.ordemBlocos.map(b => semAtual.blocos[b]),
-      count: semAtual.count,
-    });
-    semAtual = { num: semanas.length + 1, blocos: {}, count: 0, ordemBlocos: [] };
+    return fila;
   };
 
-  filaOrdenada.forEach(t => {
-    if (semAtual.count >= topicosPorSemana) pushSemana();
-    if (!semAtual.blocos[t.bloco]) {
-      semAtual.blocos[t.bloco] = { bloco: t.bloco, topicos: [] };
-      semAtual.ordemBlocos.push(t.bloco);
+  // Gera fila de revisão (só altíssima e alta, para repetição)
+  const gerarFilaRevisao = () => {
+    const fila = [];
+    const idx = { altissima: 0, alta: 0 };
+    const filas = { altissima: [...altissima], alta: [...alta] };
+    const padrao = ["altissima", "alta", "altissima", "alta"];
+    let rodada = 0;
+    while (idx.altissima < filas.altissima.length || idx.alta < filas.alta.length) {
+      const tipo = padrao[rodada % padrao.length];
+      if (idx[tipo] < filas[tipo].length) {
+        fila.push({ ...filas[tipo][idx[tipo]], revisao: true }); idx[tipo]++;
+      } else {
+        const fallback = ["altissima", "alta"].find(t => idx[t] < filas[t].length);
+        if (!fallback) break;
+        fila.push({ ...filas[fallback][idx[fallback]], revisao: true }); idx[fallback]++;
+      }
+      rodada++;
     }
-    semAtual.blocos[t.bloco].topicos.push(t);
-    semAtual.count++;
-  });
-  if (semAtual.count > 0) pushSemana();
+    return fila;
+  };
 
-  // Preenche semanas restantes com revisão (se sobrar semanas)
-  while (semanas.length < semanasDisponiveis) {
+  // Monta pool total de tópicos para preencher todas as semanas
+  // Primeira passagem: todos os tópicos
+  // Passagens seguintes: revisão (altíssima + alta) até preencher todas as semanas
+  const totalSlotsNecessarios = topicosPorSemana * semanasDisponiveis;
+  let poolCompleto = gerarFila();
+
+  while (poolCompleto.length < totalSlotsNecessarios) {
+    poolCompleto = [...poolCompleto, ...gerarFilaRevisao()];
+  }
+
+  // Pega exatamente os slots necessários
+  const pool = poolCompleto.slice(0, totalSlotsNecessarios);
+
+  // Distribui em semanas garantindo mínimo 3 disciplinas por semana
+  const semanas = [];
+
+  for (let s = 0; s < semanasDisponiveis; s++) {
+    const slice = pool.slice(s * topicosPorSemana, (s + 1) * topicosPorSemana);
+    if (slice.length === 0) break;
+
+    // Agrupa por bloco
+    const blocos = {};
+    const ordemBlocos = [];
+    slice.forEach(t => {
+      if (!blocos[t.bloco]) {
+        blocos[t.bloco] = { bloco: t.bloco, topicos: [], revisao: !!t.revisao };
+        ordemBlocos.push(t.bloco);
+      }
+      blocos[t.bloco].topicos.push(t);
+    });
+
+    const blocosList = ordemBlocos.map(b => blocos[b]);
+    const isRevisao = s * topicosPorSemana >= todos.length;
+
     semanas.push({
-      num: semanas.length + 1,
-      blocos: [{ bloco: "Revisão e Simulados", topicos: [
-        { id: `rev_${semanas.length}`, bloco: "Revisão e Simulados", titulo: "Semana de revisão — refaça tópicos com dificuldade e simulados", p: "altissima", concluido: !!progressoExistente[`rev_${semanas.length}`] },
-      ]}],
-      count: 1,
+      num: s + 1,
+      blocos: blocosList,
+      count: slice.length,
+      revisao: isRevisao,
     });
   }
 
@@ -447,7 +462,9 @@ function Dashboard({ usuario, onLogout }) {
                   {semDone ? <CheckIco /> : sem.num}
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>Semana {sem.num}</div>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>
+                    Semana {sem.num} {sem.revisao ? <span style={{ fontSize: 11, background: "#E6F1FB", color: "#0C447C", borderRadius: 4, padding: "1px 6px", marginLeft: 6, fontWeight: 500 }}>Revisão</span> : null}
+                  </div>
                   <div style={{ fontSize: 11, color: C.textMuted, marginTop: 2 }}>{sem.blocos.map(b => b.bloco).join(" · ")}</div>
                 </div>
                 <div style={{ textAlign: "right" }}>
