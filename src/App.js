@@ -91,13 +91,23 @@ function diasAteProva() {
 
 function gerarCronograma(cargo, horasDia, progressoExistente = {}) {
   const todos = [...TOPICOS_COMUNS, ...(TOPICOS_CARGO[cargo] || [])];
-  const totalHoras = diasAteProva() * horasDia;
-  const horasNecessarias = todos.reduce((s, t) => s + t.horas, 0);
 
-  // Se tempo muito curto, remove média
-  const lista = totalHoras < horasNecessarias * 0.6
-    ? todos.filter(t => t.p !== "media")
-    : todos;
+  // Semanas disponíveis até 05/09/2026 (dia antes da prova)
+  const hoje = new Date();
+  hoje.setHours(0,0,0,0);
+  const vespera = new Date("2026-09-05");
+  const diasDisponiveis = Math.max(7, Math.ceil((vespera - hoje) / 86400000));
+  const semanasDisponiveis = Math.ceil(diasDisponiveis / 7);
+
+  // Total de tópicos disponíveis
+  const totalTopicos = todos.length;
+  const totalTopicosSemMedia = todos.filter(t => t.p !== "media").length;
+  const totalSlots = horasDia * 7 * semanasDisponiveis; // slots totais no período
+
+  // Decide se inclui média: inclui se houver slots suficientes para tudo
+  const lista = totalSlots >= totalTopicos
+    ? todos
+    : todos.filter(t => t.p !== "media");
 
   // Cria IDs e marca progresso
   const comIds = lista.map((t, i) => ({
@@ -106,30 +116,31 @@ function gerarCronograma(cargo, horasDia, progressoExistente = {}) {
     concluido: !!progressoExistente[`${cargo}_${i}`],
   }));
 
-  // Separa por prioridade mantendo ordem original dentro de cada grupo
+  const nTopicos = comIds.length;
+
+  // Calcula quantos tópicos por semana para distribuir uniformemente
+  // Se tiver mais slots que tópicos: distribui proporcionalmente (revisão nas últimas semanas)
+  // Se tiver menos slots que tópicos: concentra por prioridade
+  const topicosPorSemana = Math.max(1, Math.round(nTopicos / semanasDisponiveis));
+
+  // Separa por prioridade
   const altissima = comIds.filter(t => t.p === "altissima");
   const alta      = comIds.filter(t => t.p === "alta");
   const media     = comIds.filter(t => t.p === "media");
 
-  // Intercala em rodadas: 1 altíssima, 1 alta, 1 altíssima, 1 alta, 1 altíssima, 1 média
-  // Garante mix de blocos/disciplinas em todas as semanas
+  // Intercala: altíssima, alta, altíssima, alta, altíssima, média
   const filaOrdenada = [];
   const aIdx = { altissima: 0, alta: 0, media: 0 };
   const filas = { altissima, alta, media };
   const padrao = ["altissima", "alta", "altissima", "alta", "altissima", "media"];
   let rodada = 0;
 
-  while (
-    aIdx.altissima < altissima.length ||
-    aIdx.alta < alta.length ||
-    aIdx.media < media.length
-  ) {
+  while (aIdx.altissima < altissima.length || aIdx.alta < alta.length || aIdx.media < media.length) {
     const tipo = padrao[rodada % padrao.length];
     if (aIdx[tipo] < filas[tipo].length) {
       filaOrdenada.push(filas[tipo][aIdx[tipo]]);
       aIdx[tipo]++;
     } else {
-      // Tipo esgotado — pega do próximo disponível
       const fallback = ["altissima", "alta", "media"].find(t => aIdx[t] < filas[t].length);
       if (!fallback) break;
       filaOrdenada.push(filas[fallback][aIdx[fallback]]);
@@ -138,9 +149,7 @@ function gerarCronograma(cargo, horasDia, progressoExistente = {}) {
     rodada++;
   }
 
-  // Capacidade = 1 tópico por hora por dia
-  // 1h/dia = 7 tópicos/semana, 2h/dia = 14 tópicos/semana, etc.
-  const topicosPorSemana = horasDia * 7;
+  // Distribui em semanas com topicosPorSemana uniforme
   const semanas = [];
   let semAtual = { num: 1, blocos: {}, count: 0, ordemBlocos: [] };
 
@@ -154,10 +163,7 @@ function gerarCronograma(cargo, horasDia, progressoExistente = {}) {
   };
 
   filaOrdenada.forEach(t => {
-    // Abre nova semana quando atingir o limite de tópicos
-    if (semAtual.count >= topicosPorSemana) {
-      pushSemana();
-    }
+    if (semAtual.count >= topicosPorSemana) pushSemana();
     if (!semAtual.blocos[t.bloco]) {
       semAtual.blocos[t.bloco] = { bloco: t.bloco, topicos: [] };
       semAtual.ordemBlocos.push(t.bloco);
@@ -165,8 +171,18 @@ function gerarCronograma(cargo, horasDia, progressoExistente = {}) {
     semAtual.blocos[t.bloco].topicos.push(t);
     semAtual.count++;
   });
-
   if (semAtual.count > 0) pushSemana();
+
+  // Preenche semanas restantes com revisão (se sobrar semanas)
+  while (semanas.length < semanasDisponiveis) {
+    semanas.push({
+      num: semanas.length + 1,
+      blocos: [{ bloco: "Revisão e Simulados", topicos: [
+        { id: `rev_${semanas.length}`, bloco: "Revisão e Simulados", titulo: "Semana de revisão — refaça tópicos com dificuldade e simulados", p: "altissima", concluido: !!progressoExistente[`rev_${semanas.length}`] },
+      ]}],
+      count: 1,
+    });
+  }
 
   return semanas;
 }
