@@ -275,7 +275,7 @@ function BoxInstalarApp() {
             </ol>
           </div>
           <div style={{ marginTop: 10, fontSize: 12, color: C.textMuted, fontStyle: "italic" }}>
-            O app ficará na sua tela inicial com ícone próprio e abre em tela cheia, igual a um app instalado.
+            O app ficará na sua tela inicial com ícone próprio.
           </div>
         </div>
       )}
