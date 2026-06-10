@@ -138,22 +138,24 @@ function gerarCronograma(cargo, horasDia, progressoExistente = {}) {
     rodada++;
   }
 
-  // Distribui a fila intercalada em semanas por horas disponíveis
-  const horasPorSemana = horasDia * 7;
+  // Capacidade = 1 tópico por hora por dia
+  // 1h/dia = 7 tópicos/semana, 2h/dia = 14 tópicos/semana, etc.
+  const topicosPorSemana = horasDia * 7;
   const semanas = [];
-  let semAtual = { num: 1, blocos: {}, horasAcumuladas: 0, ordemBlocos: [] };
+  let semAtual = { num: 1, blocos: {}, count: 0, ordemBlocos: [] };
 
   const pushSemana = () => {
     semanas.push({
       num: semAtual.num,
       blocos: semAtual.ordemBlocos.map(b => semAtual.blocos[b]),
-      horasAcumuladas: semAtual.horasAcumuladas,
+      count: semAtual.count,
     });
-    semAtual = { num: semanas.length + 1, blocos: {}, horasAcumuladas: 0, ordemBlocos: [] };
+    semAtual = { num: semanas.length + 1, blocos: {}, count: 0, ordemBlocos: [] };
   };
 
   filaOrdenada.forEach(t => {
-    if (semAtual.horasAcumuladas + t.horas > horasPorSemana && semAtual.horasAcumuladas > 0) {
+    // Abre nova semana quando atingir o limite de tópicos
+    if (semAtual.count >= topicosPorSemana) {
       pushSemana();
     }
     if (!semAtual.blocos[t.bloco]) {
@@ -161,10 +163,10 @@ function gerarCronograma(cargo, horasDia, progressoExistente = {}) {
       semAtual.ordemBlocos.push(t.bloco);
     }
     semAtual.blocos[t.bloco].topicos.push(t);
-    semAtual.horasAcumuladas += t.horas;
+    semAtual.count++;
   });
 
-  if (semAtual.horasAcumuladas > 0) pushSemana();
+  if (semAtual.count > 0) pushSemana();
 
   return semanas;
 }
@@ -421,7 +423,6 @@ function Dashboard({ usuario, onLogout }) {
           const doneS = ids.filter(id => progresso[id]).length;
           const semDone = doneS === ids.length && ids.length > 0;
           const open = aberta === si;
-          const hSem = sem.blocos.reduce((a, b) => a + b.topicos.reduce((x, t) => x + t.horas, 0), 0);
 
           return (
             <div key={si} style={S.semCard(semDone)}>
@@ -434,8 +435,7 @@ function Dashboard({ usuario, onLogout }) {
                   <div style={{ fontSize: 11, color: C.textMuted, marginTop: 2 }}>{sem.blocos.map(b => b.bloco).join(" · ")}</div>
                 </div>
                 <div style={{ textAlign: "right" }}>
-                  <div style={{ fontSize: 11, color: C.textMuted }}>{hSem}h estimadas</div>
-                  <div style={{ fontSize: 11, color: semDone ? C.green : C.textMuted, marginTop: 2 }}>{doneS}/{ids.length} tópicos</div>
+                  <div style={{ fontSize: 11, color: semDone ? C.green : C.textMuted }}>{doneS}/{ids.length} tópicos</div>
                 </div>
                 <span style={{ fontSize: 16, color: C.textMuted, marginLeft: 8 }}>{open ? "▲" : "▼"}</span>
               </div>
