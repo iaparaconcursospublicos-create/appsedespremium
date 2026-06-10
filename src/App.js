@@ -248,8 +248,8 @@ function BoxInstalarApp() {
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <span style={{ fontSize: 20 }}>📲</span>
           <div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>Adicione o app na tela inicial</div>
-            <div style={{ fontSize: 12, color: C.textSecondary }}>Acesse como um app de verdade, sem abrir o navegador</div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>Adicione o app na tela inicial do seu celular</div>
+            <div style={{ fontSize: 12, color: C.textSecondary }}>Como instalar o app no seu celular</div>
           </div>
         </div>
         <span style={{ color: C.textMuted, fontSize: 16 }}>{aberto ? "▲" : "▼"}</span>
