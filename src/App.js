@@ -463,9 +463,7 @@ function Dashboard({ usuario, onLogout }) {
                   {semDone ? <CheckIco /> : sem.num}
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>
-                    Semana {sem.num} {sem.revisao ? <span style={{ fontSize: 11, background: "#E6F1FB", color: "#0C447C", borderRadius: 4, padding: "1px 6px", marginLeft: 6, fontWeight: 500 }}>Revisão</span> : null}
-                  </div>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>Semana {sem.num}</div>
                   <div style={{ fontSize: 11, color: C.textMuted, marginTop: 2 }}>{sem.blocos.map(b => b.bloco).join(" · ")}</div>
                 </div>
                 <div style={{ textAlign: "right" }}>
@@ -487,7 +485,7 @@ function Dashboard({ usuario, onLogout }) {
                           {t.plataforma && (
                             <div style={{ fontSize: 11, color: C.accent, marginTop: 3, display: "flex", alignItems: "center", gap: 4 }}>
                               <span>📚</span>
-                              <span>{t.revisao ? "Revisão · " : ""}{t.plataforma}</span>
+                              <span>{t.plataforma}</span>
                             </div>
                           )}
                         </div>
