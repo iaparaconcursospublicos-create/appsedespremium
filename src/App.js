@@ -14,74 +14,75 @@ const C = {
 const CARGO_NOMES = { 200: "Agente Social", 201: "Cuidador Social", 202: "Técnico Administrativo" };
 
 // ─── TÓPICOS 100% DO RADAR ────────────────────────────────
+// plataforma: onde encontrar na plataforma da Kiwify
 const TOPICOS_COMUNS = [
   // Língua Portuguesa
-  { bloco: "Língua Portuguesa", titulo: "Interpretação e compreensão de textos", p: "altissima", horas: 4 },
-  { bloco: "Língua Portuguesa", titulo: "Coesão e coerência textual / conectivos", p: "altissima", horas: 3 },
-  { bloco: "Língua Portuguesa", titulo: "Concordância verbal e nominal", p: "alta", horas: 2 },
-  { bloco: "Língua Portuguesa", titulo: "Reescrita de frases e sinonímia", p: "alta", horas: 2 },
-  { bloco: "Língua Portuguesa", titulo: "Emprego de pronomes e colocação pronominal", p: "alta", horas: 2 },
-  { bloco: "Língua Portuguesa", titulo: "Ortografia oficial", p: "alta", horas: 1 },
-  { bloco: "Língua Portuguesa", titulo: "Regência verbal e nominal", p: "media", horas: 1 },
-  { bloco: "Língua Portuguesa", titulo: "Sinais de pontuação", p: "media", horas: 1 },
-  { bloco: "Língua Portuguesa", titulo: "Crase", p: "media", horas: 1 },
-  { bloco: "Língua Portuguesa", titulo: "Tempos e modos verbais", p: "media", horas: 1 },
+  { bloco: "Língua Portuguesa", titulo: "Interpretação e compreensão de textos", p: "altissima", horas: 4, plataforma: "Bloco 1 › Língua Portuguesa" },
+  { bloco: "Língua Portuguesa", titulo: "Coesão e coerência textual / conectivos", p: "altissima", horas: 3, plataforma: "Bloco 1 › Língua Portuguesa" },
+  { bloco: "Língua Portuguesa", titulo: "Concordância verbal e nominal", p: "alta", horas: 2, plataforma: "Bloco 1 › Língua Portuguesa" },
+  { bloco: "Língua Portuguesa", titulo: "Reescrita de frases e sinonímia", p: "alta", horas: 2, plataforma: "Bloco 1 › Língua Portuguesa" },
+  { bloco: "Língua Portuguesa", titulo: "Emprego de pronomes e colocação pronominal", p: "alta", horas: 2, plataforma: "Bloco 1 › Língua Portuguesa" },
+  { bloco: "Língua Portuguesa", titulo: "Ortografia oficial", p: "alta", horas: 1, plataforma: "Bloco 1 › Língua Portuguesa" },
+  { bloco: "Língua Portuguesa", titulo: "Regência verbal e nominal", p: "media", horas: 1, plataforma: "Bloco 1 › Língua Portuguesa" },
+  { bloco: "Língua Portuguesa", titulo: "Sinais de pontuação", p: "media", horas: 1, plataforma: "Bloco 1 › Língua Portuguesa" },
+  { bloco: "Língua Portuguesa", titulo: "Crase", p: "media", horas: 1, plataforma: "Bloco 1 › Língua Portuguesa" },
+  { bloco: "Língua Portuguesa", titulo: "Tempos e modos verbais", p: "media", horas: 1, plataforma: "Bloco 1 › Língua Portuguesa" },
   // Conhecimentos do DF
-  { bloco: "Conhecimentos do DF e Legislação", titulo: "Lei Maria da Penha — Lei 11.340/2006 (mínimo 3 questões obrigatórias)", p: "altissima", horas: 4 },
-  { bloco: "Conhecimentos do DF e Legislação", titulo: "Lei Complementar 840/2011 — Regime Jurídico dos Servidores do DF (Títulos I, V, VI, VII)", p: "altissima", horas: 4 },
-  { bloco: "Conhecimentos do DF e Legislação", titulo: "Lei Distrital 7.484/2024 — lei orgânica da carreira SEDES", p: "alta", horas: 2 },
-  { bloco: "Conhecimentos do DF e Legislação", titulo: "Lei Orgânica do DF — Título VI (Ordem Social e Meio Ambiente)", p: "alta", horas: 2 },
-  { bloco: "Conhecimentos do DF e Legislação", titulo: "Plano Distrital de Política para Mulheres (PDPM)", p: "alta", horas: 2 },
-  { bloco: "Conhecimentos do DF e Legislação", titulo: "Noções básicas de primeiros socorros (engasgo, sangramento, convulsão)", p: "alta", horas: 1 },
-  { bloco: "Conhecimentos do DF e Legislação", titulo: "Realidade socioeconômica e geográfica do DF e RIDE", p: "media", horas: 1 },
+  { bloco: "Conhecimentos do DF e Legislação", titulo: "Lei Maria da Penha — Lei 11.340/2006 (mínimo 3 questões obrigatórias)", p: "altissima", horas: 4, plataforma: "Bloco 1 › Conhecimentos do DF, Política para Mulheres, Legislação e Noções de Primeiros Socorros" },
+  { bloco: "Conhecimentos do DF e Legislação", titulo: "Lei Complementar 840/2011 — Regime Jurídico dos Servidores do DF (Títulos I, V, VI, VII)", p: "altissima", horas: 4, plataforma: "Bloco 1 › Conhecimentos do DF, Política para Mulheres, Legislação e Noções de Primeiros Socorros" },
+  { bloco: "Conhecimentos do DF e Legislação", titulo: "Lei Distrital 7.484/2024 — lei orgânica da carreira SEDES", p: "alta", horas: 2, plataforma: "Bloco 1 › Conhecimentos do DF, Política para Mulheres, Legislação e Noções de Primeiros Socorros" },
+  { bloco: "Conhecimentos do DF e Legislação", titulo: "Lei Orgânica do DF — Título VI (Ordem Social e Meio Ambiente)", p: "alta", horas: 2, plataforma: "Bloco 1 › Conhecimentos do DF, Política para Mulheres, Legislação e Noções de Primeiros Socorros" },
+  { bloco: "Conhecimentos do DF e Legislação", titulo: "Plano Distrital de Política para Mulheres (PDPM)", p: "alta", horas: 2, plataforma: "Bloco 1 › Conhecimentos do DF, Política para Mulheres, Legislação e Noções de Primeiros Socorros" },
+  { bloco: "Conhecimentos do DF e Legislação", titulo: "Noções básicas de primeiros socorros (engasgo, sangramento, convulsão)", p: "alta", horas: 1, plataforma: "Bloco 1 › Conhecimentos do DF, Política para Mulheres, Legislação e Noções de Primeiros Socorros" },
+  { bloco: "Conhecimentos do DF e Legislação", titulo: "Realidade socioeconômica e geográfica do DF e RIDE", p: "media", horas: 1, plataforma: "Bloco 1 › Conhecimentos do DF, Política para Mulheres, Legislação e Noções de Primeiros Socorros" },
   // SUAS
-  { bloco: "Fundamentos do SUAS", titulo: "PNAS/2004 — princípios, diretrizes, proteções básica e especial", p: "altissima", horas: 4 },
-  { bloco: "Fundamentos do SUAS", titulo: "NOB/SUAS 2012 — responsabilidades dos entes, gestão do trabalho", p: "altissima", horas: 3 },
-  { bloco: "Fundamentos do SUAS", titulo: "Seguranças socioassistenciais: acolhida, convívio, renda, autonomia", p: "alta", horas: 2 },
-  { bloco: "Fundamentos do SUAS", titulo: "Matricialidade sociofamiliar e territorialização", p: "alta", horas: 1 },
-  { bloco: "Fundamentos do SUAS", titulo: "Financiamento e cofinanciamento do SUAS", p: "media", horas: 1 },
+  { bloco: "Fundamentos do SUAS", titulo: "PNAS/2004 — princípios, diretrizes, proteções básica e especial", p: "altissima", horas: 4, plataforma: "Bloco 2 › Fundamentos do SUAS e PNAS 2004" },
+  { bloco: "Fundamentos do SUAS", titulo: "NOB/SUAS 2012 — responsabilidades dos entes, gestão do trabalho", p: "altissima", horas: 3, plataforma: "Bloco 2 › Fundamentos do SUAS e PNAS 2004" },
+  { bloco: "Fundamentos do SUAS", titulo: "Seguranças socioassistenciais: acolhida, convívio, renda, autonomia", p: "alta", horas: 2, plataforma: "Bloco 2 › Fundamentos do SUAS e PNAS 2004" },
+  { bloco: "Fundamentos do SUAS", titulo: "Matricialidade sociofamiliar e territorialização", p: "alta", horas: 1, plataforma: "Bloco 2 › Fundamentos do SUAS e PNAS 2004" },
+  { bloco: "Fundamentos do SUAS", titulo: "Financiamento e cofinanciamento do SUAS", p: "media", horas: 1, plataforma: "Bloco 2 › Fundamentos do SUAS e PNAS 2004" },
   // Programas DF
-  { bloco: "Programas e Benefícios do DF", titulo: "Plano DF Social — Lei 7.008/2021", p: "altissima", horas: 2 },
-  { bloco: "Programas e Benefícios do DF", titulo: "Cartão Prato Cheio — Lei 7.009/2021", p: "alta", horas: 1 },
-  { bloco: "Programas e Benefícios do DF", titulo: "Benefícios Eventuais da AS do DF — Lei 5.165/2013", p: "alta", horas: 1 },
-  { bloco: "Programas e Benefícios do DF", titulo: "Cartão Gás — Lei 6.938/2021", p: "media", horas: 1 },
-  { bloco: "Programas e Benefícios do DF", titulo: "SISAN / Restaurante Comunitário — Decreto 33.329/2011", p: "media", horas: 1 },
+  { bloco: "Programas e Benefícios do DF", titulo: "Plano DF Social — Lei 7.008/2021", p: "altissima", horas: 2, plataforma: "Bloco 2 › Programas e Benefícios Socioassistenciais do DF" },
+  { bloco: "Programas e Benefícios do DF", titulo: "Cartão Prato Cheio — Lei 7.009/2021", p: "alta", horas: 1, plataforma: "Bloco 2 › Programas e Benefícios Socioassistenciais do DF" },
+  { bloco: "Programas e Benefícios do DF", titulo: "Benefícios Eventuais da AS do DF — Lei 5.165/2013", p: "alta", horas: 1, plataforma: "Bloco 2 › Programas e Benefícios Socioassistenciais do DF" },
+  { bloco: "Programas e Benefícios do DF", titulo: "Cartão Gás — Lei 6.938/2021", p: "media", horas: 1, plataforma: "Bloco 2 › Programas e Benefícios Socioassistenciais do DF" },
+  { bloco: "Programas e Benefícios do DF", titulo: "SISAN / Restaurante Comunitário — Decreto 33.329/2011", p: "media", horas: 1, plataforma: "Bloco 2 › Programas e Benefícios Socioassistenciais do DF" },
   // Reta Final
-  { bloco: "Reta Final", titulo: "Simulado geral completo — Conhecimentos Gerais", p: "altissima", horas: 3 },
-  { bloco: "Reta Final", titulo: "Revisão dos erros por bloco", p: "alta", horas: 2 },
-  { bloco: "Reta Final", titulo: "Treino de redação dissertativo-argumentativa (3 versões)", p: "alta", horas: 3 },
-  { bloco: "Reta Final", titulo: "Revisão expressa: Maria da Penha + LC 840", p: "alta", horas: 2 },
+  { bloco: "Reta Final", titulo: "Simulado geral completo — Conhecimentos Gerais", p: "altissima", horas: 3, plataforma: "Bloco 1 e Bloco 2" },
+  { bloco: "Reta Final", titulo: "Revisão dos erros por bloco", p: "alta", horas: 2, plataforma: "Bloco 1 e Bloco 2" },
+  { bloco: "Reta Final", titulo: "Treino de redação dissertativo-argumentativa (3 versões)", p: "alta", horas: 3, plataforma: "Bloco 1 › Língua Portuguesa" },
+  { bloco: "Reta Final", titulo: "Revisão expressa: Maria da Penha + LC 840", p: "alta", horas: 2, plataforma: "Bloco 1 › Conhecimentos do DF, Política para Mulheres, Legislação e Noções de Primeiros Socorros" },
 ];
 
 const TOPICOS_CARGO = {
   200: [
-    { bloco: "Específico — Agente Social", titulo: "CRAS, CREAS e Unidades de Acolhimento — organização e funcionamento", p: "altissima", horas: 3 },
-    { bloco: "Específico — Agente Social", titulo: "PAIF e SCFV — objetivos e público-alvo", p: "altissima", horas: 3 },
-    { bloco: "Específico — Agente Social", titulo: "Abordagem social e população em situação de rua / Decreto 7.053/2009", p: "alta", horas: 2 },
-    { bloco: "Específico — Agente Social", titulo: "Fluxos de referência e contrarreferência no SUAS", p: "alta", horas: 2 },
-    { bloco: "Específico — Agente Social", titulo: "Proteção Social Especial — situações de risco e violação de direitos", p: "alta", horas: 2 },
-    { bloco: "Específico — Agente Social", titulo: "Saúde mental, redução de danos e sofrimento psíquico", p: "media", horas: 1 },
-    { bloco: "Específico — Agente Social", titulo: "Articulação intersetorial: saúde, educação, justiça", p: "media", horas: 1 },
-    { bloco: "Específico — Agente Social", titulo: "Simulado específico — Agente Social", p: "altissima", horas: 2 },
+    { bloco: "Específico — Agente Social", titulo: "CRAS, CREAS e Unidades de Acolhimento — organização e funcionamento", p: "altissima", horas: 3, plataforma: "Bloco 2.1 › B- Proteção Social Básica e Trabalho com Famílias e Comunidades" },
+    { bloco: "Específico — Agente Social", titulo: "PAIF e SCFV — objetivos e público-alvo", p: "altissima", horas: 3, plataforma: "Bloco 2.1 › B- Proteção Social Básica e Trabalho com Famílias e Comunidades" },
+    { bloco: "Específico — Agente Social", titulo: "Abordagem social e população em situação de rua / Decreto 7.053/2009", p: "alta", horas: 2, plataforma: "Bloco 2.1 › D- Abordagem Social e População em Situação de Rua" },
+    { bloco: "Específico — Agente Social", titulo: "Fluxos de referência e contrarreferência no SUAS", p: "alta", horas: 2, plataforma: "Bloco 2.1 › A- Rede Socioassistencial e Trabalho no Território" },
+    { bloco: "Específico — Agente Social", titulo: "Proteção Social Especial — situações de risco e violação de direitos", p: "alta", horas: 2, plataforma: "Bloco 2.1 › C- Proteção Social Especial (Média e Alta Complexidade)" },
+    { bloco: "Específico — Agente Social", titulo: "Saúde mental, redução de danos e sofrimento psíquico", p: "media", horas: 1, plataforma: "Bloco 2.1 › E- Noções de Saúde Mental e Uso de Álcool e Outras Drogas" },
+    { bloco: "Específico — Agente Social", titulo: "Articulação intersetorial: saúde, educação, justiça", p: "media", horas: 1, plataforma: "Bloco 2.1 › A- Rede Socioassistencial e Trabalho no Território" },
+    { bloco: "Específico — Agente Social", titulo: "Simulado específico — Agente Social", p: "altissima", horas: 2, plataforma: "Bloco 2.1 — todos os módulos" },
   ],
   201: [
-    { bloco: "Específico — Cuidador Social", titulo: "Resolução Conjunta CNAS/CONANDA 1/2009 — orientações técnicas para acolhimento", p: "altissima", horas: 3 },
-    { bloco: "Específico — Cuidador Social", titulo: "Rotinas humanizadas de cuidado: higiene, alimentação, autonomia dos usuários", p: "altissima", horas: 3 },
-    { bloco: "Específico — Cuidador Social", titulo: "Princípios do acolhimento: excepcionalidade, provisoriedade, vínculo familiar", p: "alta", horas: 2 },
-    { bloco: "Específico — Cuidador Social", titulo: "Plano Nacional de Convivência Familiar e Comunitária", p: "alta", horas: 2 },
-    { bloco: "Específico — Cuidador Social", titulo: "Trabalho em equipe interdisciplinar e atribuições do cuidador", p: "alta", horas: 2 },
-    { bloco: "Específico — Cuidador Social", titulo: "Saúde mental, redução de danos e abordagem humanizada", p: "media", horas: 1 },
-    { bloco: "Específico — Cuidador Social", titulo: "Simulado específico — Cuidador Social", p: "altissima", horas: 2 },
+    { bloco: "Específico — Cuidador Social", titulo: "Resolução Conjunta CNAS/CONANDA 1/2009 — orientações técnicas para acolhimento", p: "altissima", horas: 3, plataforma: "Bloco 2.2 › C- Proteção Social Especial de Alta Complexidade" },
+    { bloco: "Específico — Cuidador Social", titulo: "Rotinas humanizadas de cuidado: higiene, alimentação, autonomia dos usuários", p: "altissima", horas: 3, plataforma: "Bloco 2.2 › B- Rotinas de Acolhimento, Cuidado e Trabalho em Equipe" },
+    { bloco: "Específico — Cuidador Social", titulo: "Princípios do acolhimento: excepcionalidade, provisoriedade, vínculo familiar", p: "alta", horas: 2, plataforma: "Bloco 2.2 › C- Proteção Social Especial de Alta Complexidade" },
+    { bloco: "Específico — Cuidador Social", titulo: "Plano Nacional de Convivência Familiar e Comunitária", p: "alta", horas: 2, plataforma: "Bloco 2.2 › C- Proteção Social Especial de Alta Complexidade" },
+    { bloco: "Específico — Cuidador Social", titulo: "Trabalho em equipe interdisciplinar e atribuições do cuidador", p: "alta", horas: 2, plataforma: "Bloco 2.2 › B- Rotinas de Acolhimento, Cuidado e Trabalho em Equipe" },
+    { bloco: "Específico — Cuidador Social", titulo: "Saúde mental, redução de danos e abordagem humanizada", p: "media", horas: 1, plataforma: "Bloco 2.2 › E- Noções de Saúde Mental e Redução de Danos" },
+    { bloco: "Específico — Cuidador Social", titulo: "Simulado específico — Cuidador Social", p: "altissima", horas: 2, plataforma: "Bloco 2.2 — todos os módulos" },
   ],
   202: [
-    { bloco: "Específico — Técnico Administrativo", titulo: "Ato administrativo: conceito, requisitos, atributos, anulação e revogação", p: "altissima", horas: 3 },
-    { bloco: "Específico — Técnico Administrativo", titulo: "Regime Jurídico dos Servidores do DF — LC 840/2011 (provimento, vacância, PAD)", p: "altissima", horas: 3 },
-    { bloco: "Específico — Técnico Administrativo", titulo: "Lei 14.133/2021 — licitações e contratos (noções básicas)", p: "alta", horas: 2 },
-    { bloco: "Específico — Técnico Administrativo", titulo: "Arquivologia: protocolo, métodos de arquivamento, digitalização", p: "alta", horas: 2 },
-    { bloco: "Específico — Técnico Administrativo", titulo: "Redação oficial e comunicações administrativas", p: "alta", horas: 2 },
-    { bloco: "Específico — Técnico Administrativo", titulo: "Administração de materiais: classificação, estoques, patrimônio", p: "media", horas: 1 },
-    { bloco: "Específico — Técnico Administrativo", titulo: "Princípios constitucionais da Administração Pública", p: "media", horas: 1 },
-    { bloco: "Específico — Técnico Administrativo", titulo: "Simulado específico — Técnico Administrativo", p: "altissima", horas: 2 },
+    { bloco: "Específico — Técnico Administrativo", titulo: "Ato administrativo: conceito, requisitos, atributos, anulação e revogação", p: "altissima", horas: 3, plataforma: "Bloco 2.3 › B- Noções de Direito Administrativo e Legislação" },
+    { bloco: "Específico — Técnico Administrativo", titulo: "Regime Jurídico dos Servidores do DF — LC 840/2011 (provimento, vacância, PAD)", p: "altissima", horas: 3, plataforma: "Bloco 2.3 › B- Noções de Direito Administrativo e Legislação" },
+    { bloco: "Específico — Técnico Administrativo", titulo: "Lei 14.133/2021 — licitações e contratos (noções básicas)", p: "alta", horas: 2, plataforma: "Bloco 2.3 › D- Noções de Recursos Materiais, Patrimônio e Compras" },
+    { bloco: "Específico — Técnico Administrativo", titulo: "Arquivologia: protocolo, métodos de arquivamento, digitalização", p: "alta", horas: 2, plataforma: "Bloco 2.3 › C- Atendimento, Rotinas Administrativas e Arquivologia" },
+    { bloco: "Específico — Técnico Administrativo", titulo: "Redação oficial e comunicações administrativas", p: "alta", horas: 2, plataforma: "Bloco 2.3 › C- Atendimento, Rotinas Administrativas e Arquivologia" },
+    { bloco: "Específico — Técnico Administrativo", titulo: "Administração de materiais: classificação, estoques, patrimônio", p: "media", horas: 1, plataforma: "Bloco 2.3 › D- Noções de Recursos Materiais, Patrimônio e Compras" },
+    { bloco: "Específico — Técnico Administrativo", titulo: "Princípios constitucionais da Administração Pública", p: "media", horas: 1, plataforma: "Bloco 2.3 › A- Noções de Direito Constitucional" },
+    { bloco: "Específico — Técnico Administrativo", titulo: "Simulado específico — Técnico Administrativo", p: "altissima", horas: 2, plataforma: "Bloco 2.3 — todos os módulos" },
   ],
 };
 
@@ -481,7 +482,15 @@ function Dashboard({ usuario, onLogout }) {
                     return (
                       <div key={ti} style={{ ...S.topicoRow(done), borderBottom: ti < bloco.topicos.length - 1 ? `1px solid ${C.silverLight}` : "none" }} onClick={() => toggle(t.id)}>
                         <div style={S.chk(done)}>{done && <CheckIco />}</div>
-                        <span style={S.topicoTxt(done)}>{t.titulo}</span>
+                        <div style={{ flex: 1 }}>
+                          <div style={S.topicoTxt(done)}>{t.titulo}</div>
+                          {t.plataforma && (
+                            <div style={{ fontSize: 11, color: C.accent, marginTop: 3, display: "flex", alignItems: "center", gap: 4 }}>
+                              <span>📚</span>
+                              <span>{t.revisao ? "Revisão · " : ""}{t.plataforma}</span>
+                            </div>
+                          )}
+                        </div>
                         <span style={S.badge(t.p)}>{t.p === "altissima" ? "Altíssima" : t.p === "alta" ? "Alta" : "Média"}</span>
                       </div>
                     );
